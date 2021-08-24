@@ -1,6 +1,7 @@
 package io.github.gnuf0rce.mirai.plugin.command
 
 import io.github.gnuf0rce.mirai.plugin.*
+import io.github.gnuf0rce.mirai.plugin.data.AutoTranConfig
 import net.mamoe.mirai.console.command.*
 import net.mamoe.mirai.console.command.descriptor.*
 import net.mamoe.mirai.console.util.*
@@ -14,10 +15,16 @@ object HHSHCommand : SimpleCommand(
     @OptIn(ConsoleExperimentalApi::class, ExperimentalCommandDescriptors::class)
     override val prefixOptional: Boolean = false
 
+    private val regex by lazy { AutoTranConfig.pattern.toRegex() }
+
     @Handler
-    suspend fun CommandSender.handle(vararg words: String) {
+    suspend fun CommandSender.handle(vararg texts: String) {
         kotlin.runCatching {
-            sendMessage(hhsh(words.asList()).joinToString("\n") { item -> "${item.name} -> ${item.trans}" })
+            val words = texts.asList().ifEmpty {
+                if (this !is CommandSenderOnMessage<*>) return@ifEmpty emptyList()
+                regex.findAll(fromEvent.message.contentToString()).map { result -> result.value }.toList()
+            }
+            sendMessage(hhsh(words).joinToString("\n") { item -> "${item.name} -> ${item.trans}" })
         }.onFailure {
             logger.warning { "查询失败 $it" }
             sendMessage("查询失败 $it")

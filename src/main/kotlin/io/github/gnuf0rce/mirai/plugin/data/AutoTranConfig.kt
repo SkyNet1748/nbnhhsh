@@ -11,6 +11,6 @@ object AutoTranConfig : ReadOnlyPluginConfig("AutoTranConfig") {
     val pattern: String by value("""[a-z]{4,8}""".toRegex().pattern)
 
     @ValueName("exclude")
-    @ValueDescription("自动匹配的正则表达式")
+    @ValueDescription("自动匹配的排除项")
     val exclude: Set<String> by value(setOf("gkd"))
 }
