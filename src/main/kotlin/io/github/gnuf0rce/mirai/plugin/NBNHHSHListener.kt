@@ -4,6 +4,7 @@ import kotlinx.coroutines.*
 import net.mamoe.mirai.console.util.*
 import net.mamoe.mirai.console.util.CoroutineScopeUtils.childScopeContext
 import net.mamoe.mirai.event.*
+import net.mamoe.mirai.message.data.MessageSource.Key.quote
 import kotlin.coroutines.*
 
 object NBNHHSHListener : CoroutineScope {
@@ -19,7 +20,7 @@ object NBNHHSHListener : CoroutineScope {
                 val tran = hhsh(words.toList()).filter { it.trans.isNotEmpty() }
 
                 if (tran.isNotEmpty()) {
-                    hhsh(words.toList()).joinToString("\n", "好好说话: ") { item ->
+                    message.quote() + hhsh(words.toList()).joinToString("\n", "好好说话: ") { item ->
                         "${item.name} -> ${item.trans}"
                     }
                 } else {
