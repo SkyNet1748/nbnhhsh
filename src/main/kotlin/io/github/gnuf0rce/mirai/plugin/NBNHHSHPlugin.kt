@@ -23,5 +23,6 @@ object NBNHHSHPlugin : KotlinPlugin(
 
     override fun onDisable() {
         HHSHCommand.unregister()
+        NBNHHSHListener.stop()
     }
 }
