@@ -18,7 +18,7 @@ object NBNHHSHPlugin : KotlinPlugin(
     override fun onEnable() {
         AutoTranConfig.reload()
         HHSHCommand.register()
-        NBNHHSHListener.start(this, AutoTranConfig.pattern.toRegex())
+        NBNHHSHListener.start(this, AutoTranConfig.pattern.toRegex(), AutoTranConfig.exclude)
     }
 
     override fun onDisable() {
