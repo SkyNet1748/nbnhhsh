@@ -1,6 +1,9 @@
 package io.github.gnuf0rce.mirai.plugin
 
+import io.github.gnuf0rce.mirai.plugin.command.*
 import kotlinx.coroutines.*
+import net.mamoe.mirai.console.command.CommandSender.Companion.toCommandSender
+import net.mamoe.mirai.console.permission.PermissionService.Companion.testPermission
 import net.mamoe.mirai.console.util.*
 import net.mamoe.mirai.console.util.CoroutineScopeUtils.childScopeContext
 import net.mamoe.mirai.event.*
@@ -15,6 +18,7 @@ object NBNHHSHListener : CoroutineScope {
         coroutineContext = parent.childScopeContext("NBNHHSHListener")
         globalEventChannel().subscribeMessages {
             regex findingReply {
+                if (HHSHCommand.permission.testPermission(toCommandSender()).not()) return@findingReply null
                 val words = regex.findAll(message.contentToString()).map { result -> result.value }
 
                 val tran = hhsh(words.toList()).filter { it.trans.isNotEmpty() }
